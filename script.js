@@ -2,31 +2,47 @@ const bookingForm = document.getElementById("bookingForm");
 const filterDropdown = document.getElementById("filter");
 const bookingTable = document.getElementById("bookingTable").querySelector("tbody");
 
-let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
 
-bookingForm.addEventListener("submit", (event) => {
+const API_URL = "https://crudcrud.com/api/369ea01982d14fb29b04c4699daf2e82/bookings";
+
+
+document.addEventListener("DOMContentLoaded", fetchBookings);
+
+bookingForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const booking = {
-        id: Date.now().toString(),
         name: bookingForm.name.value,
         email: bookingForm.email.value,
         phone: bookingForm.phone.value,
         bus: bookingForm.bus.value,
     };
 
-    bookings.push(booking);
-    saveToLocalStorage();
-    bookingForm.reset();
-    renderBookings();
+    try {
+        await fetch(API_URL, { mode: 'no-cors' },{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(booking),
+        });
+
+        bookingForm.reset();
+        fetchBookings();
+    } catch (error) {
+        console.error("Error adding booking:", error);
+    }
 });
 
-function saveToLocalStorage() {
-    localStorage.setItem("bookings", JSON.stringify(bookings));
+async function fetchBookings() {
+    try {
+        const response = await fetch(API_URL);
+        const bookings = await response.json();
+        renderBookings(bookings);
+    } catch (error) {
+        console.error("Error fetching bookings:", error);
+    }
 }
 
-
-function renderBookings() {
+function renderBookings(bookings) {
     const filterValue = filterDropdown.value;
     bookingTable.innerHTML = "";
 
@@ -40,33 +56,37 @@ function renderBookings() {
                 <td>${booking.phone}</td>
                 <td>${booking.bus}</td>
                 <td>
-                    <button onclick="editBooking('${booking.id}')">Edit</button>
-                    <button onclick="deleteBooking('${booking.id}')">Delete</button>
+                    <button onclick="editBooking('${booking._id}')">Edit</button>
+                    <button onclick="deleteBooking('${booking._id}')">Delete</button>
                 </td>
             `;
             bookingTable.appendChild(row);
         });
 }
 
-function deleteBooking(id) {
-    bookings = bookings.filter((booking) => booking.id !== id);
-    saveToLocalStorage();
-    renderBookings();
+async function deleteBooking(id) {
+    try {
+        await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        fetchBookings();
+    } catch (error) {
+        console.error("Error deleting booking:", error);
+    }
 }
 
+async function editBooking(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`);
+        const booking = await response.json();
 
-function editBooking(id) {
-    const booking = bookings.find((booking) => booking.id === id);
+        bookingForm.name.value = booking.name;
+        bookingForm.email.value = booking.email;
+        bookingForm.phone.value = booking.phone;
+        bookingForm.bus.value = booking.bus;
 
-    bookingForm.name.value = booking.name;
-    bookingForm.email.value = booking.email;
-    bookingForm.phone.value = booking.phone;
-    bookingForm.bus.value = booking.bus;
-
-    deleteBooking(id);
+        await deleteBooking(id);
+    } catch (error) {
+        console.error("Error editing booking:", error);
+    }
 }
 
-
-filterDropdown.addEventListener("change", renderBookings);
-
-renderBookings();
+filterDropdown.addEventListener("change", fetchBookings);
