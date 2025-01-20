@@ -8,12 +8,12 @@
 <body>
     <h1>Bus Booking</h1>
     <div>
-        <label for="filter">Filter by Car Number:</label>
+        <label for="filter">Filter by Bus Number:</label>
         <select id="filter">
             <option value="All">All</option>
-            <option value="Car1">Car1</option>
-            <option value="Car2">Car2</option>
-            <option value="Car3">Car3</option>
+            <option value="bus1">Bus1</option>
+            <option value="bus2">Bus2</option>
+            <option value="bus3">Bus3</option>
         </select>
     </div>
     <form id="bookingForm">
@@ -30,11 +30,11 @@
             <input type="tel" id="phone" name="phone" required>
         </div>
         <div>
-            <label for="car">Car Number:</label>
-            <select id="car" name="car" required>
-                <option value="Car1">Car1</option>
-                <option value="Car2">Car2</option>
-                <option value="Car3">Car3</option>
+            <label for="bus">bus Number:</label>
+            <select id="bus" name="bus" required>
+                <option value="bus1">bus1</option>
+                <option value="bus2">bus2</option>
+                <option value="bus3">bus3</option>
             </select>
         </div>
         <button type="submit">Book</button>
@@ -47,7 +47,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Car Number</th>
+                <th>bus Number</th>
                 <th>Actions</th>
             </tr>
         </thead>
