@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking</title>
+</head>
+<body>
+    <h1>Bus Booking</h1>
+    <div>
+        <label for="filter">Filter by Car Number:</label>
+        <select id="filter">
+            <option value="All">All</option>
+            <option value="Car1">Car1</option>
+            <option value="Car2">Car2</option>
+            <option value="Car3">Car3</option>
+        </select>
+    </div>
+    <form id="bookingForm">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div>
+            <label for="car">Car Number:</label>
+            <select id="car" name="car" required>
+                <option value="Car1">Car1</option>
+                <option value="Car2">Car2</option>
+                <option value="Car3">Car3</option>
+            </select>
+        </div>
+        <button type="submit">Book</button>
+    </form>
+
+    <h2>Bookings</h2>
+    <table id="bookingTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Car Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
